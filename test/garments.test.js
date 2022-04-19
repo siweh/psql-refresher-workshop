@@ -58,7 +58,7 @@ describe('As part of the sql refresh workshop', () => {
 	it('you should be able to change a given Male garment to a Unisex garment', async () => {
 
 		// use db.one with an update sql statement
-		db.one(`update garment set gender = $1 where gender = $2`, ['Unisex', 'Male']);
+		db.one(`update garment set gender = $1 where description = $2`, ['Unisex', 'Red hooded jacket']);
 		// write your code above this line
 		
 		const gender_sql = 'select gender from garment where description = $1';
@@ -70,9 +70,10 @@ describe('As part of the sql refresh workshop', () => {
 	it('you should be able to add 2 Male & 3 Female garments', async () => {
 
 		// use db.none - change code below here...
-		const add_garments = 'insert into garment(description, img, season, gender, price) values($1, $2, $3, $4, $5)';
+		const add_garments = `insert into garment(description, img, season, gender, price) values($1, $2, $3, $4, $5)`;
+		//console.log(add_garments);
 		
-		await db.none(add_garments, ['Golf t-shirt', 'mens-128x128-455125.png', 'Summer', 'Male', '69.24']);
+		await db.none(add_garments, ['Golf t-shirt', 'mens-128x128-455125.png', 'Summer', 'Male', '699.24']);
 		await db.none(add_garments, ['Black Hoodie', 'jacket-128x128-455123.png', 'Winter', 'Male', '299.99']);
 		await db.none(add_garments, ['Blue Short', 'womans-128x128-455141.png', 'Summer', 'Female', '699.99']);
 		await db.none(add_garments, ['Red Dress', 'womans-128x128-455145.png', 'Summer', 'Female', '499.99']);
@@ -81,9 +82,9 @@ describe('As part of the sql refresh workshop', () => {
 
 		const gender_count_sql = 'select count(*) from garment where gender = $1';
 		const maleCount = await db.one(gender_count_sql, ['Male'], (r) => r.count);
-		console.log(maleCount);
+		//console.log(maleCount);
 		const femaleCount = await db.one(gender_count_sql, ['Female'], (r) => r.count);
-		console.log(femaleCount);
+		//console.log(femaleCount);
 
 		// went down 1 as the previous test is changing a male garment to a female one
 		assert.equal(15, maleCount);
